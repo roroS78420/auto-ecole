@@ -8,18 +8,16 @@ Permet aux élèves de s'inscrire, gérer leur agenda et communiquer, et à l'ad
 ### Accès au site (Exemples à adapter)
 
 * **Compte Élève :**
-    * Email : `eleve@exemple.com`
-    * Mot de passe : `password123`
+    * Email : `eleve@gmail.com`
+    * Mot de passe : `eleve`
 
 * **Compte Moniteur :**
-    * Email : `moniteur@exemple.com`
-    * Mot de passe : `password123`
+    * Email : `moniteur@gmail.com`
+    * Mot de passe : `moniteur`
 
 * **Compte Admin :**
-    * Email : `admin@exemple.com`
-    * Mot de passe : `password123`
-
----
+    * Email : `admin@gmail.com`
+    * Mot de passe : `admin`
 
 ### Aperçus du projet
 
