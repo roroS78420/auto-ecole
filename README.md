@@ -1,18 +1,44 @@
-# Gestion d'une auto-école
+# Projet Auto-École
 
-# Identifiants de connexion
+Site web de gestion pour auto-école. 
+Permet aux élèves de s'inscrire, gérer leur agenda et communiquer, et à l'admin de gérer les profils.
 
-Administrateur
---------------
-<b>Adresse email</b> : admin@gmail.com<br>
-<b>Mot de passe</b> : admin
+---
 
-Moniteur
---------
-<b>Adresse email</b> : moniteur@gmail.com<br>
-<b>Mot de passe</b> : moniteur
+### Accès au site (Exemples à adapter)
 
-Élève
------
-<b>Adresse email</b> : eleve@gmail.com<br>
-<b>Mot de passe </b> : eleve
+* **Compte Élève :**
+    * Email : `eleve@exemple.com`
+    * Mot de passe : `password123`
+
+* **Compte Moniteur :**
+    * Email : `moniteur@exemple.com`
+    * Mot de passe : `password123`
+
+* **Compte Admin :**
+    * Email : `admin@exemple.com`
+    * Mot de passe : `password123`
+
+---
+
+### Aperçus du projet
+
+<p align="center">
+  <strong>Page d'Accueil</strong><br>
+    <img src="img/accueil.png" alt="Aperçu de la page d'accueil" width="700">
+</p>
+<br>
+<p align="center">
+  <strong>Fonctionnalité Agenda</strong><br>
+    <img src="img/agenda.png" alt="Aperçu de l'agenda" width="700">
+</p>
+<br>
+<p align="center">
+  <strong>Messagerie</strong><br>
+    <img src="img/messages.png" alt="Aperçu de la messagerie" width="700">
+</p>
+<br>
+<p align="center">
+  <strong>Panel Admin (Gestion des profils)</strong><br>
+    <img src="img/admin.png" alt="Aperçu du panel admin pour la gestion des profils" width="700">
+</p>

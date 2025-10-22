@@ -1,50 +1,55 @@
 <?php
+// Fichier : /autoecole/php/get-events.php
 
-//--------------------------------------------------------------------------------------------------
-// This script reads event data from a JSON file and outputs those events which are within the range
-// supplied by the "start" and "end" GET parameters.
-//
-// An optional "timeZone" GET parameter will force all ISO8601 date stings to a given timeZone.
-//
-// Requires PHP 5.2.0 or higher.
-//--------------------------------------------------------------------------------------------------
+// 1. On démarre la session
+session_start();
 
-// Require our Event class and datetime utilities
-require dirname(__FILE__) . '/utils.php';
+// 2. On inclut les fichiers de configuration et de connexion
+// On utilise "../" pour remonter d'un dossier (de 'php' à 'autoecole')
+require "../core/Functions.php";
+require "../core/Constants.php";
 
-// Short-circuit if the client did not give us a date range.
-if (!isset($_GET['start']) || !isset($_GET['end'])) {
-  die("Please provide a date range.");
+// 3. On crée la connexion à la base de données !
+// La variable $bdd est maintenant disponible.
+$bdd = connectBDD(HOSTNAME, DATABASE, USERNAME, PASSWORD);
+
+// 4. Sécurité : Vérifier si l'utilisateur est connecté
+if (!isset($_SESSION['id_u'])) {
+    http_response_code(403);
+    echo json_encode(["error" => "Accès non autorisé"]);
+    exit();
+}
+$user_id = $_SESSION['id_u'];
+$user_lvl = (int)$_SESSION['lvl'];
+
+// 5. Récupérer les dates envoyées par FullCalendar
+$start_date = $_GET['start'];
+$end_date = $_GET['end'];
+
+// 6. Préparer la requête SQL
+$query = "SELECT 
+            titre AS title, 
+            date_l AS start, 
+            date_fin AS end 
+          FROM lessons 
+          WHERE 
+            date_l < ? AND date_fin > ?"; // Logique de chevauchement
+
+$params = [$end_date, $start_date]; 
+
+if ($user_lvl == 1) { // Élève
+    $query .= " AND id_e = ?";
+    $params[] = $user_id;
+} elseif ($user_lvl == 2) { // Moniteur
+    $query .= " AND id_m = ?";
+    $params[] = $user_id;
 }
 
-// Parse the start/end parameters.
-// These are assumed to be ISO8601 strings with no time nor timeZone, like "2013-12-29".
-// Since no timeZone will be present, they will parsed as UTC.
-$range_start = parseDateTime($_GET['start']);
-$range_end = parseDateTime($_GET['end']);
+$requete = $bdd->prepare($query);
+$requete->execute($params);
+$events = $requete->fetchAll(PDO::FETCH_ASSOC);
 
-// Parse the timeZone parameter if it is present.
-$time_zone = null;
-if (isset($_GET['timeZone'])) {
-  $time_zone = new DateTimeZone($_GET['timeZone']);
-}
-
-// Read and parse our events JSON file into an array of event data arrays.
-$json = file_get_contents(dirname(__FILE__) . '/../json/events.json');
-$input_arrays = json_decode($json, true);
-
-// Accumulate an output array of event data arrays.
-$output_arrays = array();
-foreach ($input_arrays as $array) {
-
-  // Convert the input array into a useful Event object
-  $event = new Event($array, $time_zone);
-
-  // If the event is in-bounds, add it to the output
-  if ($event->isWithinDayRange($range_start, $range_end)) {
-    $output_arrays[] = $event->toArray();
-  }
-}
-
-// Send JSON to the client.
-echo json_encode($output_arrays);
+// 7. Renvoyer les données au calendrier
+header('Content-Type: application/json');
+echo json_encode($events);
+?>

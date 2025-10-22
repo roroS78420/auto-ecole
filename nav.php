@@ -1,173 +1,117 @@
+<?php
+    // On récupère le nom du fichier actuel pour savoir quelle page est active
+    $currentPage = basename($_SERVER['REQUEST_URI']);
+?>
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>HiroAuto</title>
+    <title>HiroAuto - Espace Client</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-    <link href="lib/main.css" rel="stylesheet">
-    <link href="css/style6.css" rel="stylesheet" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
-    <script src="lib/main.js"></script> 
-    <style type="text/css">
 
-          #calendar {
-               max-width: 1100px;
-               margin: 0 auto;
-          }
-     </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
+
+    <link href="css/dashboard.css" rel="stylesheet">
+
+
+    
 </head>
-<?php
-if(isset($_SESSION['id_u']) && $_SESSION['lvl'] ==1){
-    ?>
-<header>
-  <div class="container">
-    <div class = "autohiro-left">
-        <h1 class="text-white">HiroAuto Eleve</h1>
-    </div>
-        <nav class = "autohiro-right">
-    <ul>
-      <li><a href="accueil">Accueil</a></li>
-      <li><a href="agenda">Agenda</a></li>
-      <li><a href="galerie">Galerie</a></li>
-      <li><a href="reception">Message</a></li>
-      <li><a href="logout">Deconnexion</a></li>
-      
-   </ul>
-  </nav>
-  </div>
-</header>
-<?php }
-elseif (isset($_SESSION['id_u']) && $_SESSION['lvl'] ==2) {
-  ?>
-   <header>
-  <div class="container">
-    <div class = "autohiro-left">
-        <h1 class="text-white">HiroAuto Moniteur</h1>
-    </div>
-    <nav class = "autohiro-right">
-    <ul>
-      <li><a href="accueil">Accueil</a></li>    
-      <li><a href="agenda-admin">Agenda</a></li>
-      <li><a href="reception">Message</a></li>
-      <li><a href="logout">Deconnexion</a></li>
-   </ul>
-  </nav>
-  </div>
-</header>
-<?php } 
-  elseif (isset($_SESSION['id_u']) && $_SESSION['lvl'] ==3) {
-    ?>
-      <header>
-  <div class="container">
-    <div class = "autohiro-left">
-        <h1 class="text-white">HiroAuto Administration</h1>
-    </div>
-    <nav class = "autohiro-right">
-    <ul>
-      <li><a href="accueil">Accueil</a></li>
-      <li><a href="admin">Liste</a></li>     
-      <li><a href="logout">Deconnexion</a></li>
-   </ul>
-  </nav>
-  </div>
-</header>
-<?php } else { ?>
-    <header>
-  <div class="container">
-    <div class = "autohiro-left">
-        <h1 class="text-white">HiroAuto</h1>
-    </div>
-    <nav class = "autohiro-right">
-    <ul>
-      <li><a href="accueil">Accueil</a></li>
-      <li><a href="login">Connexion</a></li> 
-      <li><a href="inscription">S'inscrire</a></li>    
-      <li><a href="galerie">Galerie</a></li>
-      
-   </ul>
-  </nav>
-  </div>
-</header>
-<?php } ?>
 
+<body class="<?= isset($bodyClass) ? htmlspecialchars($bodyClass) : '' ?>">
 
-
-<body>
-
-<?= $content; ?>
-
-<!-- Footer -->
-<footer class="py-5 bg-dark" style="position: sticky;">
-    <div class="container">
-      <footer class="py-5 bg-dark text-light" style="position: sticky;">
-   <div class="container">
-        <div class="row">
-            <div class="col-md-3 col-lg-4 col-xl-3">
-                <h5>Description</h5>
-                <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
-                <p class="mb-0">
-                    . . .
-                </p>
-            </div>
-
-            <div class="col-md-2 col-lg-2 col-xl-2 mx-auto">
-                <h5>S'inscrire</h5>
-                <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
-                <ul class="list-unstyled">
-                    <li>Inscrivez vous pour profiter de nos produit</a></li>
-                </ul>
-            </div>
-
-            
-
-            <div class="col-md-4 col-lg-3 col-xl-3">
-                <h5>Contact</h5>
-                <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
-                <ul class="list-unstyled">
-                    <li><i class="fa fa-home mr-2"></i> AutoHiro</li>
-                    <li><i class="fa fa-envelope mr-2"></i> AutoHiro@gmail.com</li>
-                    <li><i class="fa fa-phone mr-2"></i> + 33 74 66 14 95</li>
-                    <li><i class="fa fa-print mr-2"></i> + 33 24 56 02 34</li>
-                </ul>
-            </div>
-            <div class="col-12 copyright mt-3">
-                <p class="float-left">
-                    <a href="#">Back to top</a>
-                </p>
-            </div>
-        </div>
-    </div>
-    <!-- /.container -->
-  </footer>
-      <p class="m-0 text-center text-white">Copyright &copy; AUTOHIRO 2021</p>
-    </div>
-    <!-- /.container -->
-  </footer>
-
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Third party plugin JS-->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
-        <!-- Contact form JS-->
-        <script src="assets/mail/jqBootstrapValidation.js"></script>
-        <script src="assets/mail/contact_me.js"></script>
-        <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
-
-        <script type="text/javascript" src="assets/zoombox.js"></script> 
-
+<?php if (isset($_SESSION['id_u'])) : ?>
+    <div class="sidebar">
+        <h3 class="sidebar-brand">
+            <a href="accueil">🚗 HiroAuto</a>
+        </h3>
         
+        <?php
+            $role_titre = '';
+            if ($_SESSION['lvl'] == 1) $role_titre = "Espace Élève";
+            if ($_SESSION['lvl'] == 2) $role_titre = "Espace Moniteur";
+            if ($_SESSION['lvl'] == 3) $role_titre = "Administration";
+        ?>
+        <div class="sidebar-user-role"><?= htmlspecialchars($role_titre) ?></div>
 
-  <script type="text/javascript">
-jQuery(function($){
-    $('a.zoombox').zoombox();
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link <?= ($currentPage == 'accueil') ? 'active' : '' ?>" href="accueil"><i class="bi bi-house-door-fill me-2"></i> Accueil</a>
+            </li>
 
-});
-</script>
+            <?php if ($_SESSION['lvl'] == 1) : // Élève ?>
+                <li class="nav-item">
+                    <a class="nav-link <?= ($currentPage == 'agenda') ? 'active' : '' ?>" href="agenda"><i class="bi bi-calendar-check-fill me-2"></i> Agenda</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= ($currentPage == 'galerie') ? 'active' : '' ?>" href="galerie"><i class="bi bi-images me-2"></i> Galerie</a>
+                </li>
+                 <li class="nav-item">
+                    <a class="nav-link <?= ($currentPage == 'reception') ? 'active' : '' ?>" href="reception"><i class="bi bi-envelope-fill me-2"></i> Messages</a>
+                </li>
+            <?php elseif ($_SESSION['lvl'] == 2) : // Moniteur ?>
+                <li class="nav-item">
+                    <a class="nav-link <?= ($currentPage == 'agenda-admin') ? 'active' : '' ?>" href="agenda-admin"><i class="bi bi-calendar-week-fill me-2"></i> Agenda</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= ($currentPage == 'reception') ? 'active' : '' ?>" href="reception"><i class="bi bi-envelope-fill me-2"></i> Messages</a>
+                </li>
+            <?php elseif ($_SESSION['lvl'] == 3) : // Admin ?>
+                <li class="nav-item">
+                    <a class="nav-link <?= ($currentPage == 'admin') ? 'active' : '' ?>" href="admin"><i class="bi bi-people-fill me-2"></i> Liste</a>
+                </li>
+            <?php endif; ?>
+        </ul>
+
+        <ul class="nav flex-column mt-auto">
+             <li class="nav-item">
+                <a class="nav-link logout-link" href="logout"><i class="bi bi-box-arrow-left me-2"></i> Déconnexion</a>
+            </li>
+        </ul>
+    </div>
+
+    <main class="main-content">
+        <?= $content; ?>
+    </main>
+
+<?php else : ?>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+            <div class="container">
+                <a class="navbar-brand fw-bold" href="accueil">🚗 HiroAuto</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#visitorNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="visitorNavbar">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="accueil">Accueil</a></li>
+                        <li class="nav-item"><a class="nav-link" href="galerie">Galerie</a></li>
+                        <li class="nav-item"><a class="btn btn-outline-warning ms-lg-2" href="login">Connexion</a></li>
+                        <li class="nav-item"><a class="btn btn-warning ms-lg-2 mt-2 mt-lg-0" href="inscription">S'inscrire</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container my-5">
+        <?= $content; ?>
+    </main>
+
+    <footer class="py-4 bg-dark mt-auto">
+        <div class="container text-center">
+            <p class="mb-0 text-white-50">&copy; <?= date('Y'); ?> HiroAuto. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+<?php endif; ?>
+
 
 </body>
 </html>

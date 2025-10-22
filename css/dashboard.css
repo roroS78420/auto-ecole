@@ -1,0 +1,511 @@
+/* =================================================== */
+/* NOUVEAU THÈME "ASPHALTE & AMBRE" POUR HIROAUTO   */
+/* =================================================== */
+
+:root {
+    --asphalt-bg: #1e1e24;
+    --sidebar-bg: #121212;
+    --accent-color: #FFC107; /* Ambre/Jaune doré */
+    --accent-color-hover: #ffca2c;
+    --text-primary: #f5f5f5;
+    --text-secondary: #a0a0a5;
+    --border-color: #2d2d34;
+    --font-main: 'Poppins', sans-serif;
+}
+
+/* --- 2. STYLES DE BASE (S'APPLIQUENT À TOUT LE SITE) --- */
+html {
+    height: 100%;
+}
+body {
+    font-family: var(--font-main);
+    background-color: var(--asphalt-bg);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+}
+.text-muted {
+    color: var(--text-secondary) !important;
+}
+
+/* --- 3. MISE EN PAGE DU DASHBOARD (PAR DÉFAUT) --- */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 260px;
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--border-color);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+.main-content {
+    margin-left: 260px;
+    padding: 2rem;
+}
+.sidebar-brand a {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.sidebar-brand a:hover {
+    color: var(--accent-color);
+}
+
+.sidebar-user-role {
+    font-size: 0.9rem;
+    color: var(--accent-color);
+    background-color: rgba(255, 193, 7, 0.1);
+    border: 1px solid rgba(255, 193, 7, 0.5);
+    padding: 0.25rem 0.75rem;
+    border-radius: 2rem;
+    text-align: center;
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* --- 4. LIENS DE NAVIGATION (LE COEUR DU DESIGN) --- */
+.sidebar .nav-link {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 0.25rem;
+    position: relative;
+    transition: color 0.2s, background-color 0.2s;
+    overflow: hidden; /* Pour la barre latérale */
+}
+
+/* La barre verticale (invisible par défaut) */
+.sidebar .nav-link::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%) translateX(-100%); /* Cachée à gauche */
+    height: 80%;
+    width: 4px;
+    background-color: var(--accent-color);
+    border-radius: 2px;
+    transition: transform 0.3s ease;
+}
+
+/* Effet au survol */
+.sidebar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+}
+
+/* Lien ACTIF : la magie opère ici */
+.sidebar .nav-link.active {
+    color: var(--accent-color);
+    font-weight: 500;
+    background-color: rgba(255, 193, 7, 0.08);
+}
+.sidebar .nav-link.active::before {
+    transform: translateY(-50%) translateX(0); /* On fait apparaître la barre */
+}
+
+
+/* Lien de Déconnexion */
+.sidebar .logout-link { color: #dc3545; }
+.sidebar .logout-link:hover { background-color: rgba(220, 53, 69, 0.1); color: #f8515d; }
+/* Ces règles ne s'appliqueront que si le body a la classe "calendar-page" */
+/* --- MISE EN PAGE SPÉCIALE POUR LA PAGE CALENDRIER --- */
+/* Ces règles ne s'appliqueront que si le body a la classe "calendar-page" */
+/* --- 4. MISE EN PAGE SPÉCIALE POUR LA PAGE CALENDRIER --- */
+
+/* On transforme le conteneur principal en une page plein écran */
+body.calendar-page .main-content {
+    margin-left: 260px; /* Conserve l'espace pour la sidebar */
+    padding: 0; /* On enlève le padding pour aller jusqu'au bord */
+    height: 100vh; /* Prend toute la hauteur de l'écran */
+    display: flex;
+    flex-direction: column;
+}
+
+/* On ré-applique le padding au titre */
+body.calendar-page h3 {
+    padding: 1.5rem 0;
+}
+
+/* Le conteneur du calendrier s'étire pour remplir l'espace */
+body.calendar-page .calendar-container {
+    flex-grow: 1; /* Prend toute la place verticale restante */
+    padding: 0 1.5rem 1.5rem 1.5rem; /* Padding pour ne pas être collé aux bords */
+    position: relative;
+    overflow: auto; /* Le scroll se fera ici si le contenu est trop grand */
+}
+
+/* Le calendrier remplit son conteneur */
+body.calendar-page #calendar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+
+/* --- 5. RESPONSIVE --- */
+@media (max-width: 992px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .main-content {
+        margin-left: 0;
+    }
+    
+    /* Correction pour le calendrier sur mobile */
+    body.calendar-page .main-content {
+        height: auto; /* Sur mobile, on laisse la page scroller normalement */
+        min-height: calc(100vh - 74px); /* Hauteur de l'écran moins la sidebar */
+    }
+    body.calendar-page .calendar-container {
+        overflow: visible; /* Pas de scroll interne */
+        height: 80vh; /* Donne une bonne hauteur par défaut */
+    }
+    body.calendar-page #calendar {
+        position: static; /* Le calendrier se comporte normalement */
+    }
+}
+/* =================================================== */
+/* STYLES POUR LA NOUVELLE BOÎTE DE RÉCEPTION        */
+/* =================================================== */
+
+.inbox-list .list-group-item {
+    background-color: var(--sidebar-bg); /* Fond sombre des cartes */
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.inbox-list .list-group-item:hover {
+    background-color: #2c2c2e; /* Un peu plus clair au survol */
+}
+
+.inbox-list a {
+    text-decoration: none;
+}
+
+/* Style pour les messages NON LUS */
+.inbox-list .list-group-item.unread {
+    background-color: #2d2d34; /* Fond légèrement différent */
+    border-left: 4px solid var(--accent-color); /* Ligne ambre à gauche */
+}
+
+.inbox-list .list-group-item.unread .sender-name,
+.inbox-list .list-group-item.unread .message-subject {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.inbox-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: var(--accent-color); /* Fond ambre */
+    color: #000; /* Texte noir pour la lisibilité */
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    margin-right: 1rem;
+    flex-shrink: 0; /* Empêche l'avatar de rétrécir */
+}
+
+.sender-name {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.message-subject {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90%;
+}
+
+.message-date {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+.unread-dot {
+    width: 10px;
+    height: 10px;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+    margin-left: 1rem;
+    align-self: center;
+    flex-shrink: 0;
+}
+
+/* Style pour le bouton "Nouveau message" */
+.btn-warning {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: #000;
+}
+.btn-warning:hover {
+    background-color: var(--accent-color-hover);
+    border-color: var(--accent-color-hover);
+    color: #000;
+}
+/* =================================================== */
+/* STYLES POUR LA PAGE DE LECTURE (VUE CHAT)         */
+/* =================================================== */
+
+.conversation-header {
+    display: flex;
+    align-items: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.message-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem 0;
+    overflow-y: auto;
+    /* On force une hauteur pour que le champ de réponse reste en bas */
+    /* Ajuste (100vh - 250px) si ton header/footer est différent */
+    height: calc(100vh - 280px); 
+    min-height: 300px;
+}
+
+.message-bubble {
+    padding: 0.75rem 1rem;
+    border-radius: 18px;
+    max-width: 70%;
+    word-wrap: break-word;
+}
+
+.message-bubble .message-content {
+    line-height: 1.5;
+}
+
+.message-bubble .message-meta {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+}
+
+/* Messages reçus (de l'autre personne) */
+.message-bubble.received {
+    background-color: var(--sidebar-bg); /* Fond gris foncé */
+    color: var(--text-primary);
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+}
+
+/* Messages envoyés (par l'utilisateur) */
+.message-bubble.sent {
+    background-color: var(--accent-color); /* Fond ambre */
+    color: #000; /* Texte noir */
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+}
+.message-bubble.sent .message-meta {
+    color: rgba(0,0,0,0.7);
+}
+
+/* Formulaire de réponse */
+.reply-form-container {
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+.reply-form {
+    display: flex;
+    align-items: flex-start;
+}
+.reply-form textarea.form-control {
+    background-color: var(--sidebar-bg);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+    border-radius: 12px;
+}
+.reply-form textarea.form-control:focus {
+    background-color: var(--sidebar-bg);
+    color: var(--text-primary);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 0.25rem rgba(255,193,7,.25);
+}
+.reply-form .btn {
+    height: 58px; /* Hauteur de 3 lignes de texte */
+    width: 58px;
+    border-radius: 12px;
+    flex-shrink: 0;
+}
+/* =================================================== */
+/* STYLES POUR PERSONNALISER FULLCALENDAR            */
+/* =================================================== */
+
+/* --- Conteneur général et bordures --- */
+.calendar-container .fc {
+    border: none; /* On enlève la vilaine bordure extérieure */
+}
+
+/* --- En-tête (Boutons, Titre) --- */
+.fc-header-toolbar {
+    margin-bottom: 1.5rem !important;
+}
+
+.fc .fc-toolbar-title {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* Style des boutons (précédent, suivant, etc.) */
+.fc .fc-button,
+.fc .fc-button:not(:disabled):hover {
+    background-color: var(--sidebar-bg); /* Fond des boutons */
+    border-color: var(--border-color);
+    color: var(--text-secondary);
+    box-shadow: none;
+    text-transform: capitalize; /* Met en majuscule juste la première lettre */
+}
+
+/* Bouton actif (today, timeGridWeek, etc.) */
+.fc .fc-button-primary:not(:disabled).fc-button-active,
+.fc .fc-button-primary:not(:disabled):active {
+    background-color: var(--accent-color); /* Couleur Ambre */
+    border-color: var(--accent-color);
+    color: #000; /* Texte noir pour le contraste */
+    font-weight: 600;
+}
+
+/* --- Vue Principale (Grille) --- */
+
+/* En-têtes de jours (lun. 20/10, mar. 21/10...) */
+.fc .fc-col-header-cell {
+    background-color: var(--sidebar-bg);
+    border: 1px solid var(--border-color);
+    border-bottom-width: 2px;
+}
+.fc .fc-col-header-cell-cushion {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* Case du jour "Aujourd'hui" */
+.fc .fc-day-today {
+    background-color: rgba(255, 193, 7, 0.05); /* Léger fond ambre */
+}
+.fc .fc-day-today .fc-col-header-cell-cushion {
+    color: var(--accent-color); /* Texte en ambre */
+}
+
+/* --- Axe des heures (08 h, 09 h...) --- */
+.fc .fc-timegrid-slot-label {
+    border-color: var(--border-color);
+    color: var(--text-secondary);
+    padding: 0 0.75rem;
+}
+
+/* On met les heures pleines en plus visible */
+.fc .fc-timegrid-slot-label:not(.fc-timegrid-slot-minor) {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Lignes de la grille */
+.fc .fc-timegrid-slot,
+.fc .fc-timegrid-lane {
+    border-color: var(--border-color); /* Lignes plus subtiles */
+}
+
+/* Ligne rouge "maintenant" */
+.fc .fc-timegrid-now-indicator-line {
+    border-color: var(--accent-color); /* Ligne en ambre */
+    border-width: 2px;
+}
+.fc .fc-timegrid-now-indicator-arrow {
+    border-color: var(--accent-color); /* Flèche en ambre */
+}
+/* =================================================== */
+/* STYLES POUR LA SECTION GALERIE (PORTFOLIO)        */
+/* =================================================== */
+
+.portfolio-item {
+    position: relative;
+    display: block;
+    border-radius: 8px; /* Bords arrondis pour les cartes */
+    overflow: hidden; /* Important pour que l'image ne dépasse pas */
+    transition: transform 0.3s ease-in-out;
+}
+
+.portfolio-item:hover {
+    transform: translateY(-5px); /* Léger soulèvement au survol */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.portfolio-item .portfolio-item-caption {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 163, 255, 0.7); /* Fond ambre semi-transparent */
+    transition: all 0.5s ease;
+    opacity: 0;
+}
+
+.portfolio-item .portfolio-item-caption:hover {
+    opacity: 1;
+}
+
+.portfolio-item-caption-content {
+    font-size: 1.5rem;
+}
+.portfolio-item-caption-content i {
+    color: white; /* icône plus blanche */
+}
+
+/* Images dans la galerie */
+.portfolio-item img {
+    width: 100%; /* L'image prend toute la largeur de sa colonne */
+    height: 250px; /* Hauteur fixe pour toutes les images de la grille */
+    object-fit: cover; /* Recadre l'image sans la déformer */
+}
+
+/* Styles pour les modales (pop-ups d'image) */
+.portfolio-modal .modal-content {
+    border-radius: 12px;
+}
+.portfolio-modal .modal-body {
+    padding: 3rem;
+}
+.portfolio-modal-title {
+    color: var(--accent-color) !important; /* Titre en ambre */
+}
+.portfolio-modal .divider-custom-line {
+    background-color: var(--accent-color);
+}
+.portfolio-modal .text-accent {
+    color: var(--accent-color) !important;
+}
+.portfolio-modal .text-secondary-light {
+    color: var(--text-secondary); /* Texte plus clair */
+}
+.portfolio-modal .btn-close-white {
+    filter: invert(1) grayscale(100%) brightness(200%); /* Rend l'icône blanche */
+}

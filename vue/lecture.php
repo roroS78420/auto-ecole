@@ -1,66 +1,96 @@
-<?php
+<?php 
+auth(1); 
+global $bdd; // Assure-toi que $bdd est disponible
 
-function deleteMessage($id_exp) {
-    global $bdd;
-    $delete = $bdd->prepare("DELETE FROM messages WHERE id_exp = :id_exp");
-    $delete->bindValue('id_exp', $id_exp, PDO::PARAM_INT);
-    return $delete->execute();
+// --- 1. LOGIQUE PHP DE LA PAGE DE LECTURE ---
+
+$user_id = $_SESSION['id_u'];
+
+// On vérifie qu'on a bien reçu l'ID de l'expéditeur depuis l'URL
+if (!isset($_GET['id']) || empty($_GET['id'])) {
+    // Redirige vers la boîte de réception si aucun ID n'est fourni
+    header('Location: reception');
+    exit();
+}
+$sender_id = (int)$_GET['id'];
+
+// --- Action : Gérer l'envoi d'une réponse ---
+if (isset($_POST['send_reply'])) {
+    $message = htmlspecialchars($_POST['message_reply']);
+    if (!empty($message)) {
+        // On insère la réponse dans la BDD
+        $insert_msg = $bdd->prepare(
+            "INSERT INTO messages (id_exp, id_dest, objet, message) 
+             VALUES (?, ?, ?, ?)"
+        );
+        // L'expéditeur est l'utilisateur actuel, le destinataire est celui de la conversation
+        $insert_msg->execute([$user_id, $sender_id, "Re: ...", $message]); 
+        
+        // On rafraîchit la page pour voir le message envoyé
+        header('Location: lecture?id=' . $sender_id);
+        exit();
+    }
 }
 
-function deleteAllMessages() {
-    global $bdd;
-    $delete_all = $bdd->prepare("DELETE FROM messages");
-    return $delete_all->execute();
-}
+// --- Action : Marquer les messages de cet expéditeur comme LUS ---
+$update_read = $bdd->prepare(
+    "UPDATE messages SET lu = 1 
+     WHERE id_exp = ? AND id_dest = ?"
+);
+$update_read->execute([$sender_id, $user_id]);
 
-if (isset($_GET['id_exp'])) { 
-   $id_exp = $_GET['id_exp'];
-   $delete = deleteMessage($id_exp);
-   header('Location: reception');
+// --- Récupération : Infos de l'expéditeur ---
+$req_sender = $bdd->prepare("SELECT nom, prenom FROM users WHERE id_u = ?");
+$req_sender->execute([$sender_id]);
+$sender = $req_sender->fetch();
+if (!$sender) {
+    die("Erreur : Expéditeur inconnu.");
 }
+$sender_name = htmlspecialchars($sender['prenom'] . ' ' . $sender['nom']);
 
-if (isset($_POST['delete'])) {
-   $delete_all = deleteAllMessages();
-   header('Location: reception');
-}
+// --- Récupération : Toute la conversation ---
+$req_messages = $bdd->prepare(
+    "SELECT * FROM messages 
+     WHERE (id_exp = :user_id AND id_dest = :sender_id) 
+        OR (id_exp = :sender_id AND id_dest = :user_id)
+     ORDER BY id ASC" // ASC pour un affichage chronologique
+);
+$req_messages->execute([
+    'user_id' => $user_id,
+    'sender_id' => $sender_id
+]);
+$messages = $req_messages->fetchAll();
 
-if(isset($_SESSION['id_u']) AND !empty($_SESSION['id_u'])) {
-$msg = $bdd->prepare('SELECT * FROM messages WHERE id_dest = ?');
-$msg->execute(array($_SESSION['id_u']));
-$msg_nbr = $msg->rowCount();
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-   <title>Boîte de réception</title>
-   <meta charset="utf-8" />
-</head>
-<body>
-   <a href="envoi">Nouveau message</a>
 
-    <div class="d-flex justify-content-center">
-         <form method="post" action="">
-            <button type="submit" name="delete" class="btn btn-danger fs-lg mb-3" onclick="return(confirm('Voulez-vous vraiment supprimer tous les messages ?'));">
-               Supprimer tous les messages
-            </button>
-         </form>
-      </div>
+<div class="conversation-header mb-4">
+    <a href="reception" class="btn btn-outline-warning me-3"><i class="bi bi-arrow-left"></i></a>
+    <h1 class="h3 text-white mb-0">Conversation avec <?= $sender_name ?></h1>
+</div>
 
-<a class="btn btn-danger font-weight-bolder" href="messages&id_exp=<?= $message['id_exp']; ?>" onclick="return(confirm('Voulez-vous vraiment supprimer ce message ?'));">Supprimer</a>
-   <br /><br /><br />
-   <h3>Votre boîte de réception:</h3>
-   <?php
-   if($msg_nbr == 0) { echo "Vous n'avez aucun message..."; }
-   while($m = $msg->fetch()) {
-      $p_exp = $bdd->prepare('SELECT nom FROM users WHERE id_u = ?');
-      $p_exp->execute(array($m['id_exp']));
-      $p_exp = $p_exp->fetch();
-      $p_exp = $p_exp['nom'];
-   ?>
-   <b><?= $p_exp ?></b> vous a envoyé: <br />
-   <?= nl2br($m['message']) ?><br />
-   -------------------------------------<br/>
-   <?php } ?>
-</body>
-</html>
-<?php } ?>
+<div class="message-list">
+    <?php foreach ($messages as $msg): ?>
+        
+        <?php if ($msg['id_exp'] == $user_id): ?>
+            <div class="message-bubble sent">
+                <div class="message-content"><?= nl2br(htmlspecialchars($msg['message'])) ?></div>
+                <div class="message-meta">Envoyé</div>
+            </div>
+        <?php else: ?>
+            <div class="message-bubble received">
+                <div class="message-content"><?= nl2br(htmlspecialchars($msg['message'])) ?></div>
+                <div class="message-meta">Reçu</div>
+            </div>
+        <?php endif; ?>
+
+    <?php endforeach; ?>
+</div>
+
+<div class="reply-form-container">
+    <form method="POST" action="lecture?id=<?= $sender_id ?>" class="reply-form">
+        <textarea name="message_reply" class="form-control" rows="3" placeholder="Écrivez votre réponse..." required></textarea>
+        <button type="submit" name="send_reply" class="btn btn-warning ms-3">
+            <i class="bi bi-send-fill"></i>
+        </button>
+    </form>
+</div>

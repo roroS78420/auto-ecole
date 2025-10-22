@@ -6,7 +6,7 @@ Use auto_ecole;
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : Dim 02 mai 2021 à 21:00
+-- Généré le : jeu. 29 avr. 2021 à 17:06
 -- Version du serveur :  10.4.14-MariaDB
 -- Version de PHP : 7.4.10
 
@@ -50,13 +50,7 @@ INSERT INTO `lessons` (`id_l`, `titre`, `description`, `date_l`, `date_fin`, `id
 (3, 'sdqsdqsd', 'qsdqsdq', '2021-04-27 15:36:00', '2021-04-27 15:36:00', 3, 2),
 (4, 'sdqsdqsd', 'qsdqsdq', '2021-04-27 15:43:00', '2021-04-27 16:13:00', 3, 2),
 (5, 'qsdqsd', 'sqdqsd', '2021-04-28 15:37:00', '2021-04-28 15:37:00', 3, 2),
-(6, 'qsdqsd', 'sqdqsd', '2021-04-28 15:37:00', '2021-04-28 15:37:00', 3, 2),
-(7, 'qsdf', 'qs<dqsd', '2021-04-30 18:56:00', '2021-04-30 18:56:00', 3, 2),
-(8, 'rezgfzerftdscgdsfg', 'hsdfgsdfgsdfg', '2021-04-30 18:00:00', '2021-04-30 18:59:00', 3, 2),
-(9, 'qsdqsdqsd', 'qsdqsd', '2021-04-30 19:07:00', '2021-04-30 19:07:00', 3, 2),
-(10, 'qsdqsdqsd', 'qsdqsd', '2021-04-30 19:07:00', '2021-04-30 19:07:00', 3, 2),
-(11, 'sqfqsdfqs', 'dfqsdfqs', '2021-05-01 19:03:00', '2021-05-02 19:03:00', 3, 2),
-(12, 'rezgfzerftdscgdsfg', 'hsdfgsdfgsdfg', '2021-04-30 18:00:00', '2021-04-30 18:59:00', 3, 2);
+(6, 'qsdqsd', 'sqdqsd', '2021-04-28 15:37:00', '2021-04-28 15:37:00', 3, 2);
 
 -- --------------------------------------------------------
 
@@ -72,6 +66,15 @@ CREATE TABLE `messages` (
   `objet` text NOT NULL,
   `lu` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `messages`
+--
+
+INSERT INTO `messages` (`id`, `id_exp`, `id_dest`, `message`, `objet`, `lu`) VALUES
+(1, 2, 3, 'qsdqsd', 'qsdqsd', 0),
+(2, 2, 3, 'dqsdqsdQSD QSDFqsfcsdfgdfsg', 'qsdqsdqs', 0),
+(3, 3, 2, 'sqdsqdqsdqsd', 'Cours de conduite', 0);
 
 -- --------------------------------------------------------
 
@@ -136,13 +139,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pour la table `lessons`
 --
 ALTER TABLE `lessons`
-  MODIFY `id_l` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_l` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT pour la table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `users`
